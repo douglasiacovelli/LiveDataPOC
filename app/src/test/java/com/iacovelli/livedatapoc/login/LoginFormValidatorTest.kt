@@ -17,9 +17,9 @@ class LoginFormValidatorTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
     @Mock
-    lateinit var emailObserver: Observer<Int>
+    private lateinit var emailObserver: Observer<Int>
     @Mock
-    lateinit var passwordObserver: Observer<Int>
+    private lateinit var passwordObserver: Observer<Int>
 
     private val validator = LoginFormValidator()
     private val VALID_PASSWORD = "12345678"
