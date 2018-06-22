@@ -1,14 +1,15 @@
 package com.iacovelli.livedatapoc.login
 
-import com.iacovelli.livedatapoc.R
-import org.junit.Assert.*
-import org.junit.Rule
-import org.junit.Test
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
+import com.iacovelli.livedatapoc.R
+import com.nhaarman.mockito_kotlin.mock
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -16,10 +17,8 @@ import org.mockito.junit.MockitoJUnitRunner
 class LoginFormValidatorTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
-    @Mock
-    private lateinit var emailObserver: Observer<Int>
-    @Mock
-    private lateinit var passwordObserver: Observer<Int>
+    private val emailObserver: Observer<Int> = mock()
+    private val passwordObserver: Observer<Int> = mock()
 
     private val validator = LoginFormValidator()
     private val VALID_PASSWORD = "12345678"
