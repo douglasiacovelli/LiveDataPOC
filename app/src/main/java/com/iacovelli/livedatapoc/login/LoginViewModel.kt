@@ -25,19 +25,19 @@ class LoginViewModel(private val repository: LoginRepository,
 
     private fun authenticateUser() {
         val loginCredential = LoginCredential(email.value!!, password.value!!)
-        repository.login(loginCredential) {
-            if (it) {
-                userLogged.value = SingleEvent(true)
-            } else {
-                message.value = SingleEvent(R.string.unexpected_error)
-            }
+        val loginResponse = repository.login(loginCredential)
+
+        if (loginResponse) {
+            userLogged.value = SingleEvent(true)
+        } else {
+            message.value = SingleEvent(R.string.unexpected_error)
         }
+
     }
 
     class Factory: ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return LoginViewModel(LoginRepository(), LoginFormValidator()) as T
         }
-
     }
 }

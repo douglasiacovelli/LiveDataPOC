@@ -5,8 +5,8 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
 class LoginRepository {
-    fun <T> login(loginCredential: LoginCredential, callback: (logged: Boolean) -> T) {
+    fun login(loginCredential: LoginCredential): Boolean {
         println("Logging user with credentials: $loginCredential")
-        callback(true)
+        return true
     }
 }
