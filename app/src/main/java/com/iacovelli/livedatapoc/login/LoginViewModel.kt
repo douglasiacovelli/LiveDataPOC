@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.iacovelli.livedatapoc.R
-import com.iacovelli.livedatapoc.common.Event
+import com.iacovelli.livedatapoc.common.SingleEvent
 import com.iacovelli.livedatapoc.model.LoginCredential
 
 class LoginViewModel(private val repository: LoginRepository,
@@ -12,14 +12,14 @@ class LoginViewModel(private val repository: LoginRepository,
 
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
-    val userLogged = MutableLiveData<Event<Boolean>>()
-    val message = MutableLiveData<Event<Int>>()
+    val userLogged = MutableLiveData<SingleEvent<Boolean>>()
+    val message = MutableLiveData<SingleEvent<Int>>()
 
     fun onUserSubmit() {
         if (formValidator.isValid(email.value, password.value)) {
             authenticateUser()
         } else {
-            message.value = Event(R.string.invalid_form)
+            message.value = SingleEvent(R.string.invalid_form)
         }
     }
 
@@ -27,9 +27,9 @@ class LoginViewModel(private val repository: LoginRepository,
         val loginCredential = LoginCredential(email.value!!, password.value!!)
         repository.login(loginCredential) {
             if (it) {
-                userLogged.value = Event(true)
+                userLogged.value = SingleEvent(true)
             } else {
-                message.value = Event(R.string.unexpected_error)
+                message.value = SingleEvent(R.string.unexpected_error)
             }
         }
     }
