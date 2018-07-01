@@ -4,11 +4,15 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.iacovelli.livedatapoc.R
+import com.iacovelli.livedatapoc.common.Schedulers
+import com.iacovelli.livedatapoc.common.SchedulersContract
 import com.iacovelli.livedatapoc.common.SingleEvent
 import com.iacovelli.livedatapoc.model.LoginCredential
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class LoginViewModel(private val repository: LoginRepository,
-                     val formValidator: LoginFormValidator): ViewModel() {
+                     val formValidator: LoginFormValidator,
+                     val schedulers: SchedulersContract = Schedulers()): ViewModel() {
 
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
@@ -25,14 +29,14 @@ class LoginViewModel(private val repository: LoginRepository,
 
     private fun authenticateUser() {
         val loginCredential = LoginCredential(email.value!!, password.value!!)
-        val loginResponse = repository.login(loginCredential)
-
-        if (loginResponse) {
-            userLogged.value = SingleEvent(true)
-        } else {
-            message.value = SingleEvent(R.string.unexpected_error)
-        }
-
+        repository.login(loginCredential)
+                .subscribeOn(schedulers.io)
+                .observeOn(schedulers.main)
+                .subscribe({
+                    userLogged.value = SingleEvent(true)
+                }, {
+                    message.value = SingleEvent(R.string.unexpected_error)
+                })
     }
 
     class Factory: ViewModelProvider.Factory {

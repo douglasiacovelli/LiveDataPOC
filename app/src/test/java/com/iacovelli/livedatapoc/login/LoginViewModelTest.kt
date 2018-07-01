@@ -2,10 +2,12 @@ package com.iacovelli.livedatapoc.login
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
+import com.iacovelli.livedatapoc.FakeSchedulers
 import com.iacovelli.livedatapoc.R
 import com.iacovelli.livedatapoc.common.SingleEvent
 import com.iacovelli.livedatapoc.model.LoginCredential
 import com.nhaarman.mockito_kotlin.*
+import io.reactivex.Completable
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -30,15 +32,13 @@ class LoginViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = LoginViewModel(repository, formValidator)
+        viewModel = LoginViewModel(repository, formValidator, FakeSchedulers())
         viewModel.message.observeForever(messageObserver)
         viewModel.userLogged.observeForever(userLoggedObserver)
     }
 
     @Test
     fun whenFormIsInvalidItShouldNotCallRepository() {
-        given(formValidator.isValid(anyString(), anyString()))
-                .willReturn(false)
         viewModel.onUserSubmit()
 
         verify(messageObserver).onChanged(messageCaptor.capture())
@@ -59,7 +59,7 @@ class LoginViewModelTest {
 
         given(formValidator.isValid(anyString(), anyString()))
                 .willReturn(true)
-        given(repository.login(any())).willReturn(true)
+        given(repository.login(any())).willReturn(Completable.complete())
 
         viewModel.onUserSubmit()
         verify(repository).login(loginCredentialCaptor.capture())
