@@ -12,6 +12,9 @@ class LoginRepository {
 
     fun login(loginCredential: LoginCredential): Completable {
         println("Logging user with credentials: $loginCredential")
-        return Completable.timer(500, TimeUnit.MILLISECONDS)
+        return Completable.create {
+            Thread.sleep(2000)
+            it.onComplete()
+        }
     }
 }
