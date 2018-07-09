@@ -9,5 +9,5 @@
     <string name="invalid_email">This email is invalid</string>
     <string name="invalid_password">The password should have at least 8 characters</string>
     <string name="error_required">This field cannot be empty</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
 </resources>
