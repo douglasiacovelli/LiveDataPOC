@@ -6,20 +6,14 @@ import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.typeText
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.*
-import android.support.test.filters.SmallTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import com.iacovelli.livedatapoc.login.LoginFragment
-import com.squareup.rx2.idler.Rx2Idler
-import io.reactivex.plugins.RxJavaPlugins
-import org.junit.Before
-import org.junit.runner.RunWith
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.not
 import org.junit.Rule
 import org.junit.Test
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.RootMatchers.withDecorView
-import android.support.test.espresso.Espresso.onView
-import org.hamcrest.CoreMatchers.*
+import org.junit.rules.RuleChain
+import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
@@ -29,12 +23,12 @@ class MainScreenTest {
     private val INVALID_EMAIL = "address.com"
     private val INVALID_PASSWORD = "1234"
 
-    @Rule
-    @JvmField
-    val instantExecutorRule = InstantTaskExecutorRule()
-
+    private val activityTestRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
     @get:Rule
-    val activityTestRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    val testRules: RuleChain = RuleChain
+            .outerRule(RetryTestRule(3))
+            .around(activityTestRule)
+            .around(InstantTaskExecutorRule())
 
     @Test
     fun checkFormFilledCorrectlyPasses() {
@@ -73,8 +67,12 @@ class MainScreenTest {
         onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.invalid_form)))
                 .check(matches(isDisplayed()))
 
-    }
+        onView(withText(R.string.invalid_password))
+                .check(matches(isDisplayed()))
 
-    private fun getString(resId: Int) = activityTestRule.activity.getString(resId)
+        onView(withText(R.string.invalid_email))
+                .check(matches(isDisplayed()))
+
+    }
 
 }
