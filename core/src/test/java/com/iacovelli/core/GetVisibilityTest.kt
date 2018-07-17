@@ -2,6 +2,7 @@ package com.iacovelli.core
 
 import android.view.View
 import com.iacovelli.core.bindingadapters.GetVisibility
+import junit.framework.Assert.assertEquals
 import org.junit.Test
 
 import org.junit.Assert.*
