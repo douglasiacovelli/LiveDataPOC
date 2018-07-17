@@ -1,8 +1,6 @@
 package com.iacovelli.livedatapoc.login
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.*
 import com.iacovelli.livedatapoc.R
 import com.iacovelli.livedatapoc.common.Schedulers
 import com.iacovelli.livedatapoc.common.SchedulersContract
@@ -18,6 +16,15 @@ class LoginViewModel(private val repository: LoginRepository,
     val password = MutableLiveData<String>()
     val userLogged = MutableLiveData<SingleEvent<Boolean>>()
     val message = MutableLiveData<SingleEvent<Int>>()
+    val loading = MutableLiveData<Boolean>()
+    val buttonEnabled: LiveData<Boolean>
+
+    init {
+        buttonEnabled = Transformations.map(loading) {
+            !it
+        }
+        loading.value = false
+    }
 
     fun onUserSubmit() {
         if (formValidator.isValid(email.value, password.value)) {
@@ -28,10 +35,15 @@ class LoginViewModel(private val repository: LoginRepository,
     }
 
     private fun authenticateUser() {
+        loading.value = true
+
         val loginCredential = LoginCredential(email.value!!, password.value!!)
         repository.login(loginCredential)
                 .subscribeOn(schedulers.io)
                 .observeOn(schedulers.main)
+                .doAfterTerminate {
+                    loading.value = false
+                }
                 .subscribe({
                     userLogged.value = SingleEvent(true)
                 }, {

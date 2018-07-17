@@ -35,6 +35,10 @@ class LoginFragment: Fragment() {
     }
 
     private fun setupUI(loginViewModel: LoginViewModel, mainViewModel: MainViewModel) {
+        loginViewModel.loading.observe(this, Observer {
+            hideKeyboard()
+        })
+
         loginViewModel.message.observe(this, Observer {
             it?.getContent()?.let {
                 hideKeyboard()
@@ -52,8 +56,10 @@ class LoginFragment: Fragment() {
 
     private fun hideKeyboard() {
         activity?.let {
-            val imm = it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(it.currentFocus.windowToken, 0)
+            if (it.currentFocus != null) {
+                val imm = it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(it.currentFocus.windowToken, 0)
+            }
         }
 
     }

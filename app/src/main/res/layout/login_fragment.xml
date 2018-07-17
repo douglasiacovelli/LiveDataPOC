@@ -7,49 +7,61 @@
         <variable name="viewModel"
             type="com.iacovelli.livedatapoc.login.LoginViewModel" />
     </data>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/normal"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/email_input"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/small"
-            app:error="@{viewModel.formValidator.emailError}">
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/email_field"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/normal"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/email_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:text="@={viewModel.email}" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="@dimen/small"
+                app:error="@{viewModel.formValidator.emailError}">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/email_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.email}" />
+            </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/password_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/normal"
-            app:error="@{viewModel.formValidator.passwordError}">
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/password_field"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:text="@={viewModel.password}" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="@dimen/normal"
+                app:error="@{viewModel.formValidator.passwordError}">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/password_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.password}" />
+            </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/submit_button"
-            android:layout_height="60dp"
-            android:layout_width="match_parent"
-            android:text="@string/submit"
-            android:theme="@style/ButtonAccent"
-            android:onClick="@{_ -> viewModel.onUserSubmit()}"/>
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_height="60dp"
+                android:layout_width="match_parent"
+                android:text="@string/submit"
+                android:theme="@style/ButtonAccent"
+                android:onClick="@{_ -> viewModel.onUserSubmit()}"
+                android:enabled="@{viewModel.buttonEnabled}"
+                tools:enabled="true"/>
 
-    </LinearLayout>
+        </LinearLayout>
+        <include
+            layout="@layout/loading"
+            app:loading="@{viewModel.loading}"
+            tools:visibility="gone"/>
+    </RelativeLayout>
 </layout>

@@ -6,10 +6,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="color_background">@color/white</item>
+        <item name="android:windowBackground">?attr/color_background</item>
+    </style>
+
+    <style name="AppTheme.Dark">
+        <item name="color_background">@color/dark_concrete</item>
     </style>
 
     <style name="ButtonAccent">
-        <item name="android:colorButtonNormal">?colorAccent</item>
+        <item name="android:colorButtonNormal">@drawable/color_button</item>
         <item name="android:textColor">#fff</item>
     </style>
 

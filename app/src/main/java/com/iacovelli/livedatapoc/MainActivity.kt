@@ -33,16 +33,22 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun goToScreen(screen: Screen) {
+    private fun goToScreen(screen: Screen, add: Boolean = false) {
         val fragment = when(screen) {
             Screen.LOGIN -> LoginFragment()
             Screen.LIST -> ListFragment()
         }
         Log.d("debug", "go to screen ${screen.name}")
-        supportFragmentManager.beginTransaction()
+        val supportFragmentManager = supportFragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.container, fragment)
-                .addToBackStack(fragment.javaClass.name)
-                .commit()
+
+        if (add) {
+            supportFragmentManager.add(R.id.container, fragment)
+                    .commit()
+        } else {
+            supportFragmentManager.replace(R.id.container, fragment)
+                    .addToBackStack(fragment.javaClass.name)
+                    .commit()
+        }
     }
 }
