@@ -1,4 +1,4 @@
-package com.iacovelli.livedatapoc.common
+package com.iacovelli.core.schedulers
 
 import io.reactivex.Scheduler
 

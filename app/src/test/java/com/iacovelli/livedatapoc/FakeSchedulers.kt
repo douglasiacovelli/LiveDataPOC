@@ -1,6 +1,6 @@
 package com.iacovelli.livedatapoc
 
-import com.iacovelli.livedatapoc.common.SchedulersContract
+import com.iacovelli.core.schedulers.SchedulersContract
 import io.reactivex.*
 import io.reactivex.schedulers.Schedulers
 

@@ -1,4 +1,4 @@
-package com.iacovelli.livedatapoc.common
+package com.iacovelli.core.bindingadapters
 
 import android.databinding.BindingAdapter
 import android.support.annotation.StringRes
@@ -9,12 +9,12 @@ class ErrorBinder {
     companion object {
         @BindingAdapter("error")
         @JvmStatic fun setError(view: TextInputLayout, @StringRes resId: Int?) {
-            if (resId == null) {
-                view.isErrorEnabled = false
-            } else {
-                view.error = view.context.getString(resId)
-                view.isErrorEnabled = true
+
+            val errorEnabled = IsErrorEnabled().execute(resId)
+            if (errorEnabled) {
+                view.error = view.context.getString(resId!!)
             }
+            view.isErrorEnabled = errorEnabled
         }
     }
 }

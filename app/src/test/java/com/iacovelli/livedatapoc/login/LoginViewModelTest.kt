@@ -4,7 +4,7 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
 import com.iacovelli.livedatapoc.FakeSchedulers
 import com.iacovelli.livedatapoc.R
-import com.iacovelli.livedatapoc.common.SingleEvent
+import com.iacovelli.core.livedatautils.SingleEvent
 import com.iacovelli.livedatapoc.model.LoginCredential
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Completable

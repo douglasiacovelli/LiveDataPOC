@@ -2,15 +2,14 @@ package com.iacovelli.livedatapoc.login
 
 import android.arch.lifecycle.*
 import com.iacovelli.livedatapoc.R
-import com.iacovelli.livedatapoc.common.Schedulers
-import com.iacovelli.livedatapoc.common.SchedulersContract
-import com.iacovelli.livedatapoc.common.SingleEvent
+import com.iacovelli.core.schedulers.Schedulers
+import com.iacovelli.core.schedulers.SchedulersContract
+import com.iacovelli.core.livedatautils.SingleEvent
 import com.iacovelli.livedatapoc.model.LoginCredential
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class LoginViewModel(private val repository: LoginRepository,
                      val formValidator: LoginFormValidator,
-                     val schedulers: SchedulersContract = Schedulers()): ViewModel() {
+                     private val schedulers: SchedulersContract = Schedulers()): ViewModel() {
 
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
