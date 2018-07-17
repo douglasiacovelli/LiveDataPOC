@@ -1,6 +1,5 @@
 package com.iacovelli.livedatapoc.list
 
-import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
