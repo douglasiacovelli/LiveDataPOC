@@ -10,4 +10,5 @@
     <string name="invalid_password">The password should have at least 8 characters</string>
     <string name="error_required">This field cannot be empty</string>
     <string name="ok">OK</string>
+    <string name="phone">Phone</string>
 </resources>
