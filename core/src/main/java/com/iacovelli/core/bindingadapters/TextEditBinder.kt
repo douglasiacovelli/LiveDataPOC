@@ -9,20 +9,25 @@ class TextEditBinder {
     companion object {
 
         @JvmStatic
-        @BindingAdapter("formatter")
-        fun addFormatter(editText: EditText, formatter: Formatter){
+        @BindingAdapter(value = ["formatter", "validator"], requireAll = false)
+        fun addListeners(editText: EditText, formatter: Formatter?, validator: Validator?){
 
             editText.addTextChangedListener(object: TextWatcher {
-                var edittingText = false
+                var editingText = false
 
                 override fun afterTextChanged(s: Editable?) {
-                    if (!edittingText) {
-                        edittingText = true
+                    if (!editingText && formatter != null) {
+                        editingText = true
                         val formattedText = formatter.format(s.toString())
                         editText.setText(formattedText)
                         editText.setSelection(formattedText.length)
-                        edittingText = false
+                        editingText = false
                     }
+
+                    validator?.let {
+                        validator.validate(editText.text.toString())
+                    }
+
                 }
 
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -37,4 +42,8 @@ class TextEditBinder {
 
 interface Formatter {
     fun format(text: String): String
+}
+
+interface Validator {
+    fun validate(string: String)
 }

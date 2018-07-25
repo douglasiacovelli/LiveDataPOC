@@ -17,9 +17,10 @@ class LoginViewModel(private val repository: LoginRepository,
                      private val schedulers: SchedulersContract = Schedulers()): ViewModel() {
 
     private var submitted = false
-    private val email = MutableLiveData<String>()
+    val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val phone = MutableLiveData<String>()
+
     val userLogged = MutableLiveData<SingleEvent<Boolean>>()
     val message = MutableLiveData<SingleEvent<Int>>()
     val loading = MutableLiveData<Boolean>()
@@ -32,30 +33,11 @@ class LoginViewModel(private val repository: LoginRepository,
         loading.value = false
     }
 
-    fun getEmail(): String? {
-        return email.value
-    }
-
-    fun setEmail(emailValue: String) {
-        email.value = emailValue
-        if (submitted) {
-            formValidator.isEmailValid(emailValue)
-        }
-    }
-
-    val passwordlistener = object: SimpleTextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-            if (submitted) {
-                formValidator.isPasswordValid(s.toString())
-            }
-        }
-    }
-
     val phoneFormatter = object: Formatter {
         override fun format(text: String): String {
 
             if (text.isEmpty()) return ""
-            if (text.length == 6) {
+            if (text.length == 6 && !text.contains("-")) {
                 return text.substring(0, 5) + "-" + text[5]
             }
             return text
@@ -64,7 +46,7 @@ class LoginViewModel(private val repository: LoginRepository,
 
     fun onUserSubmit() {
         submitted = true
-        if (formValidator.isValid(email.value, password.value)) {
+        if (formValidator.isValid(email.value, password.value, phone.value)) {
             authenticateUser()
         } else {
             message.value = SingleEvent(R.string.invalid_form)
