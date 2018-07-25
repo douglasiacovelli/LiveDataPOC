@@ -11,10 +11,12 @@ class ErrorBinder {
         @JvmStatic fun setError(view: TextInputLayout, @StringRes resId: Int?) {
 
             val errorEnabled = IsErrorEnabled().execute(resId)
+
             if (errorEnabled) {
                 view.error = view.context.getString(resId!!)
+            } else {
+                view.error = null
             }
-            view.isErrorEnabled = errorEnabled
         }
     }
 }
