@@ -8,35 +8,35 @@ class LoginFormValidator {
     val passwordError = MutableLiveData<Int>()
 
     fun isValid(email: String?, password: String?): Boolean {
-        val emailValid = isEmailValid(email, emailError)
-        val passwordValid = isPasswordValid(password, passwordError)
+        val emailValid = isEmailValid(email)
+        val passwordValid = isPasswordValid(password)
 
         return emailValid && passwordValid
     }
 
-    private fun isPasswordValid(passwordString: String?, error: MutableLiveData<Int>): Boolean {
+    fun isPasswordValid(passwordString: String?): Boolean {
         if (passwordString.isNullOrBlank()) {
-            error.value = R.string.error_required
+            passwordError.value = R.string.error_required
             return false
         }
         if (passwordString!!.length < 8) {
-            error.value = R.string.invalid_password
+            passwordError.value = R.string.invalid_password
             return false
         }
-        error.value = null
+        passwordError.value = null
         return true
     }
 
-    private fun isEmailValid(emailString: String?, error: MutableLiveData<Int>): Boolean {
+    fun isEmailValid(emailString: String?): Boolean {
         if (emailString.isNullOrBlank()) {
-            error.value = R.string.error_required
+            emailError.value = R.string.error_required
             return false
         }
         if (!emailString!!.contains("@")){
-            error.value = R.string.invalid_email
+            emailError.value = R.string.invalid_email
             return false
         }
-        error.value = null
+        emailError.value = null
         return true
     }
 }
